@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>2025 · 我们的映画</title>
+    <title>2025 · 我們的映画</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -11,7 +11,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: #000; font-family: 'Noto Serif SC', serif; color: #fff; height: 100dvh; overflow: hidden; }
 
-        /* --- 顶部 APP 分段进度条 --- */
+        /* --- 頂部分段進度條 --- */
         .story-header {
             position: fixed; top: env(safe-area-inset-top); left: 0; width: 100%; 
             display: flex; gap: 4px; padding: 10px 15px; z-index: 1000;
@@ -19,7 +19,7 @@
         .progress-bar { flex: 1; height: 2px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; }
         .progress-active { height: 100%; width: 0%; background: #fff; transition: width 0.3s linear; }
 
-        /* --- 音乐按钮 (更明显) --- */
+        /* --- 音樂按鈕 --- */
         #music-btn {
             position: fixed; top: calc(env(safe-area-inset-top) + 25px); right: 15px; 
             z-index: 1000; width: 34px; height: 34px; display: none;
@@ -29,100 +29,97 @@
             display: flex; align-items: center; justify-content: center;
             animation: rotate 5s linear infinite; font-size: 14px;
         }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
 
-        /* --- 页面样式 --- */
+        /* --- 頁面結構 --- */
         .swiper { width: 100%; height: 100%; }
         .swiper-slide { position: relative; display: flex; flex-direction: column; justify-content: flex-end; }
 
-        /* 大标题：第一个瞬间 */
+        /* 藝術背景字 */
         .moment-bg-text {
-            position: absolute; top: 8%; left: 20px; font-size: 55px; font-weight: 900;
+            position: absolute; top: 10%; left: 20px; font-size: 55px; font-weight: 900;
             color: rgba(255,255,255,0.06); -webkit-text-stroke: 1px rgba(255,255,255,0.15);
-            z-index: 1; pointer-events: none; white-space: nowrap;
+            z-index: 1; pointer-events: none;
         }
 
-        /* 图片容器 (优化：防止裂图导致的白边) */
+        /* 圖片容器 */
         .photo-frame {
-            position: relative; width: 90%; height: 50vh; margin: 0 auto 30px;
-            border-radius: 15px; overflow: hidden; z-index: 5;
-            background: #1a1a1a; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: relative; width: 88%; height: 52vh; margin: 0 auto 30px;
+            border-radius: 12px; overflow: hidden; z-index: 5;
+            background: #111; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
-        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
 
-        /* 文字内容区 */
-        .content-box {
-            padding: 0 30px calc(50px + env(safe-area-inset-bottom));
-            z-index: 10;
-        }
+        /* 文字內容 */
+        .content-box { padding: 0 30px calc(60px + env(safe-area-inset-bottom)); z-index: 10; }
         .m-title { font-size: 24px; font-weight: 700; color: var(--accent); margin-bottom: 12px; }
-        .m-desc { font-size: 15px; line-height: 1.8; color: rgba(255,255,255,0.85); text-align: justify; }
+        .m-desc { font-size: 15px; line-height: 1.8; color: rgba(255,255,255,0.8); text-align: justify; }
 
-        /* 总结页特供排版 */
+        /* 總結頁 */
         .final-slide { background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%); }
         .final-inner { padding: 40px 30px; text-align: center; }
-        .final-p { font-size: 15px; line-height: 2.2; color: rgba(255,255,255,0.7); margin-bottom: 15px; }
-        .final-highlight { color: var(--accent); font-weight: 700; display: block; margin: 20px 0; }
+        .final-p { font-size: 14px; line-height: 2.2; color: rgba(255,255,255,0.6); margin-bottom: 15px; }
+        .final-highlight { color: var(--accent); font-weight: 700; display: block; margin: 20px 0; font-size: 16px; }
 
-        /* 入口引导 (解决音乐播放的核心) */
+        /* 入口遮罩 (解鎖音樂的關鍵) */
         #launch-pad {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 1s ease;
         }
         .launch-btn {
-            background: none; border: 1px solid var(--accent); color: var(--accent);
-            padding: 15px 40px; font-size: 16px; letter-spacing: 5px; margin-top: 30px;
+            background: none; border: 1.5px solid var(--accent); color: var(--accent);
+            padding: 14px 45px; font-size: 16px; letter-spacing: 5px; margin-top: 30px;
+            border-radius: 30px;
         }
-
-        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        .mute-hint { font-size: 12px; color: #555; margin-top: 15px; }
     </style>
 </head>
 <body>
 
     <div id="launch-pad">
-        <div style="font-size: 28px; font-weight: 900; letter-spacing: 8px;">2025</div>
-        <div style="font-size: 12px; color: #666; margin-top: 10px;">A YEAR OF US</div>
-        <button class="launch-btn" onclick="startStory()">开启回忆</button>
+        <div style="font-size: 32px; font-weight: 900; letter-spacing: 10px; color: #fff;">2025</div>
+        <div style="font-size: 12px; color: var(--accent); margin-top: 10px; letter-spacing: 2px;">我們的年度紀錄</div>
+        <button class="launch-btn" id="startBtn">點擊開啟回憶</button>
+        <div class="mute-hint">※ 請確保手機已關閉靜音模式</div>
     </div>
 
     <div class="story-header" id="progressHeader"></div>
 
-    <audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
+    <audio id="bgm" src="bgm.mp3" loop preload="auto" playsinline></audio>
     <div id="music-btn" onclick="toggleAudio()"><div class="music-symbol">♪</div></div>
 
     <div class="swiper mySwiper">
-        <div class="swiper-wrapper" id="slideContainer">
-            </div>
+        <div class="swiper-wrapper" id="slideContainer"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         const moments = [
-            { t: "副驾上的告白", d: "晚饭像场尴尬的行为艺术。车内空气快要液化时，你让我靠边，盯着我说：这不是对姐姐的喜欢，而是某种更原始、更麻烦的，男人对女人的爱。那一刻，你亲手击穿了我由理智和克制组成的防御工事。奇怪的是，我没碎，反而被你稳稳接住了，于是我们相爱了。" },
-            { t: "散步时的算计", d: "第一次吻我发生得毫无预兆你突然拉我起身，将我用力抱住。你的呼吸贴着我的脖子，急促得像是刚从一场跨越世纪的奔跑。那一刻没有什么浪漫的算计，只有一种要把对方揉进骨血里的蛮劲。世界在那一刻是静止的，但这种静止比任何激烈的动作都更热烈。" },
-            { t: "灵肉交代后的告白", d: "我和你都是那种对生活保持高度警惕的理智动物，但在那种淋漓尽致的巅峰时刻，我们透过彼此的呼吸、战栗、绷紧的肌肉，清晰地触摸到了彼此的灵魂。你下意识地问：“你愿不愿意嫁给我？”这是我第一次被灵魂拷问。" },
-            { t: "车里的三十岁生日", d: "你的三十岁生日，在局促的小车里，只有简单的意面和蛋糕。但你看着这些，眼眶红了。那滴被你偷偷抹去的眼泪，比任何礼物都纯粹。喧嚣的世界撤退了，只剩下一种绝对的平静和安稳。" },
-            { t: "冗长信息里的定风丹", d: "就在我最无所适从时，你发来一条长长的信息，平静地告诉我你会一直爱我。那条信息像是个安神丸，生生止住了我的慌乱。原来，最高级的治愈不是甜言蜜语，而是你在理智克制的同时，依然愿意给我一份冗长且认真的交代。" },
-            { t: "逃离规则的投名状", d: "在一次久违的“出差”时，你轻描淡写地说“翘班了”。对于你这种严谨冷智的人来说，这种对规则的小小背叛，确实对我最动人的告白。它证明在你的价值排序里，我终于排在了那些“正确的事情”之前。" },
-            { t: "车站里的温热胃泰", d: "出差归来，你递来的保温杯里装的是温热的三九胃泰。我喝到它的那一刻，所有的奶茶咖啡都显得苍白。这种带有药味的关怀，直抵常态生活的本质。它温热了我的胃，也熨平了我的心。" },
-            { t: "词不达意的回响", d: "看着你拆礼物时那些词不达意、甚至带着泪光的信息，我突然觉得爱人是一件极美好的事。你像一个被宠爱的宝贝一样欢心热烈，是爱和人生最真实的回馈：灵魂的剥开不再是冒险，而是一场满载而歸的奔赴。" },
-            { t: "被投喂的心疼", d: "当紧急药丸的副作用让我难受时，你忙着买水果、炖肉，一刻不停。我总嫌你不善表达，但当胃里被你的心疼塞满时，我明白：这就是你最深刻的表达。" },
-            { t: "短途出逃", d: "像地下工作者一样在地铁接头，逃往陌生的城市。直到看见一桌的小食和放满热水的浴缸才发现，原来被人宠在细节里，才是最极致的疼爱。" }
+            { t: "副駕上的告白", d: "晚飯像場尷尬的行為藝術。車內空氣快要液化時，你讓我靠邊，盯著說：這不是對姐姐的喜歡，而是某種更原始、更麻煩的，男人對女人的愛。那一刻，你親手擊穿了我由理智和克制組成的防禦工事。奇怪的是，我沒碎，反而被你穩穩接住了，於是我們相愛了。" },
+            { t: "散步時的算計", d: "第一次吻我發生得毫無預兆你突然拉我起身，將我用力抱住。你的呼吸貼著我的脖子，急促得像是剛從一場跨越世紀的奔跑。那一刻沒有什麼浪漫的算計，只有一種要把對方揉進骨血裡的蠻勁。世界在那一刻是靜止的，但這種靜止比任何激烈的動作都更熱烈。" },
+            { t: "靈肉交代後的告白", d: "我和你都是那種對生活保持高度警惕的理智動物，但在那種淋漓盡致的巔峰時刻，我們透過彼此的呼吸、戰慄、繃緊的肌肉，清晰地觸摸到了彼此的靈魂。你下意識地問：「你願不願意嫁給我？」這是我第一次被靈魂拷問。" },
+            { t: "車裡的三十歲生日", d: "你的三十歲生日，在局促的小車裡，只有簡單的意面和蛋糕。但你看著這些，眼眶紅了。那滴被你偷偷抹去的眼淚，比任何禮物都純粹。喧囂的世界撤退了，只剩下一種絕對的平靜和安穩。" },
+            { t: "冗長信息裡的定風丹", d: "就在我最無所適從時，你發來一條長長的信息，平靜地告訴我你會一直愛我。那條信息像是個安神丸，生生止住了我的慌亂。原來，最高級的治癒不是甜言蜜語，而是你依然願意給我一份冗長且認真的交代。" },
+            { t: "逃離規則的投名狀", d: "在一次久違的「出差」時，你輕描淡寫地說「翹班了」。對於你這種嚴謹冷智的人來說，這種對規則的小小背叛，確實對我最動人的告白。它證明在你的價值排序裡，我終於排在了那些「正確的事情」之前。" },
+            { t: "車站裡的溫熱胃泰", d: "出差歸來，你遞來的保溫杯裡裝的是溫熱的三九胃泰。我喝到它的那一刻，所有的奶茶咖啡都顯得蒼白。這種帶有藥味的關懷，直抵常態生活的本質。它溫熱了我的胃，也熨平了我的心。" },
+            { t: "詞不達意的回響", d: "看著你拆禮物時那些詞不達意、甚至帶著淚光的信息，我突然覺得愛人是一件極美好的事。你像一個被寵愛的寶貝一樣歡心熱烈，是愛和人生最真實的回饋：靈魂的剝開不再是冒險，而是一場滿載而歸的奔赴。" },
+            { t: "被投喂的心疼", d: "當緊急藥丸的副作用讓我難受時，你忙著買水果、燉肉，一刻不停。我總嫌你不善表達，但當胃裡被你的心疼塞滿時，我明白：這就是你最深刻的表達。" },
+            { t: "短途出逃", d: "像地下工作者一樣在地鐵接頭，逃往陌生的城市。直到看見一桌的小食和放滿熱水的浴缸才發現，原來被人寵在細節裡，才是最極致的疼愛。" }
         ];
 
-        const numZh = ["第一个", "第二个", "第三个", "第四个", "第五个", "第六个", "第七个", "第八个", "第九个", "第十个"];
+        const zhNum = ["第一個", "第二個", "第三個", "第四個", "第五個", "第六個", "第七個", "第八個", "第九個", "第十個"];
 
-        // 渲染页面
         const container = document.getElementById('slideContainer');
         const header = document.getElementById('progressHeader');
         
         moments.forEach((m, i) => {
-            // 补零处理图片名：01, 02...
             const imgIdx = (i + 1).toString().padStart(2, '0');
             container.innerHTML += `
                 <div class="swiper-slide">
-                    <div class="moment-bg-text">${numZh[i]}瞬间</div>
+                    <div class="moment-bg-text">${zhNum[i]}瞬間</div>
                     <div class="photo-frame">
-                        <img src="${imgIdx}.jpg" onerror="this.src='https://via.placeholder.com/800x1000/1a1a1a/e2c088?text=Image+Lost+Check+Case'">
+                        <img src="${imgIdx}.jpg" onerror="this.src='${imgIdx}.JPG'">
                     </div>
                     <div class="content-box">
                         <h2 class="m-title">${m.t}</h2>
@@ -133,66 +130,60 @@
             header.innerHTML += `<div class="progress-bar"><div class="progress-active"></div></div>`;
         });
 
-        // 渲染总结页
+        // 最後的總結頁
         container.innerHTML += `
             <div class="swiper-slide final-slide">
                 <div class="final-inner">
-                    <p class="final-p">当然还有很多很多的瞬间...</p>
-                    <p class="final-p">比如我在马来西亚旅行时，你告诉我能不能替你选个小礼物。</p>
-                    <p class="final-p">比如你一靠近我，手就会触碰到我。</p>
-                    <span class="final-highlight">羽毛球拍、衣服、包包、水果、杯子...<br>隔三差五的奶茶、咖啡...</span>
-                    <p class="final-p">每周一晚上的炸酱面，分给我的蔚来Key。<br>你总说我融进了你的生活，其实你早就侵略了我。</p>
-                    <span class="final-highlight">“如果在此之前，我们是活着”<br>“那从此之后，我们可以精彩地活着”</span>
-                    <p style="font-size:12px; opacity:0.4; margin-top:30px;">- 2025 年度记录 -</p>
+                    <p class="final-p">當然還有很多很多的瞬間...</p>
+                    <p class="final-p">比如在馬來西亞旅行時，你告訴我能不能替你選個小禮物。</p>
+                    <p class="final-p">比如你一靠近我，手就會觸碰到我。</p>
+                    <span class="final-highlight">羽毛球拍、衣服、包包、水果、杯子...<br>還有隔三差五的奶茶與咖啡</span>
+                    <p class="final-p">每周一晚上的炸醬面，分給我的蔚來Key。<br>你總說我融進了你的生活，其實你早就侵略了我。</p>
+                    <span class="final-highlight">“如果在此之前，我們是活著”<br>“那從此之後，我們可以精彩地活著”</span>
                 </div>
             </div>
         `;
         header.innerHTML += `<div class="progress-bar"><div class="progress-active"></div></div>`;
 
-        // 初始化 Swiper
         const swiper = new Swiper(".mySwiper", {
             direction: "vertical",
             speed: 800,
             on: {
                 slideChange: function() {
-                    const idx = this.activeIndex;
                     document.querySelectorAll('.progress-active').forEach((el, i) => {
-                        el.style.width = i <= idx ? '100%' : '0%';
+                        el.style.width = i <= this.activeIndex ? '100%' : '0%';
                     });
                 }
             }
         });
 
-        // 核心：启动函数
-        function startStory() {
-            const audio = document.getElementById('bgm');
-            // 尝试播放
-            audio.play().then(() => {
-                console.log("Audio playing");
-            }).catch(e => {
-                console.log("Audio blocked", e);
-            });
+        // 終極解鎖音樂邏輯
+        document.getElementById('startBtn').addEventListener('click', function() {
+            const bgm = document.getElementById('bgm');
             
+            // 關鍵：在交互瞬間加載並播放
+            bgm.load();
+            const playPromise = bgm.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log("播放成功");
+                }).catch(error => {
+                    console.log("播放被攔截: ", error);
+                });
+            }
+
             document.getElementById('launch-pad').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('launch-pad').style.display = 'none';
                 document.getElementById('music-btn').style.display = 'block';
+                document.querySelectorAll('.progress-active')[0].style.width = '100%';
             }, 800);
-            
-            // 激活第一个进度条
-            document.querySelectorAll('.progress-active')[0].style.width = '100%';
-        }
+        });
 
         function toggleAudio() {
-            const audio = document.getElementById('bgm');
-            const btn = document.querySelector('.music-symbol');
-            if(audio.paused) {
-                audio.play();
-                btn.style.animationPlayState = 'running';
-            } else {
-                audio.pause();
-                btn.style.animationPlayState = 'paused';
-            }
+            const bgm = document.getElementById('bgm');
+            bgm.paused ? bgm.play() : bgm.pause();
         }
     </script>
 </body>
